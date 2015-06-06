@@ -1,4 +1,4 @@
-package application;
+package pa;
 
 import java.util.ArrayList;
 
@@ -11,32 +11,41 @@ import javafx.scene.paint.Color;
 /** Pattern Associator */
 public class PA 
 {
+	
 	/* Bitmap width */
 	public final static int WIDTH = 20;
 	
 	/* Bitmap height */
 	public final static int HEIGHT = 20;
 	
+	/* Background input value. */
 	public final static int Background = -1;
+	
+	/* Foreground input value. */
 	public final static int Foreground = 1;
 	
-	/** Array of patterns. */
-	public ArrayList<ArrayList<Integer>> patterns;
+	/* Foreground color. */
+	public final static Color ForeColor = Color.RED;
 	
-	/** Matrix of weights. */
-	public ArrayList<ArrayList<Integer>> weights;
+	
+	
+	/* Matrix of weights. */
+	private ArrayList<ArrayList<Integer>> weights;
+	
 	
 	private int nInputs = 0;
 	private int width = 0;
 	private int height = 0;
 	
 	
+	
 	/** Initializes a new instance of the class. */
 	public PA(ArrayList<WritableImage> patternsImg)
 	{
-		Initialize(patternsImg);
-		Learn();
+		ArrayList<ArrayList<Integer>> patterns = Initialize(patternsImg);
+		Learn(patterns);
 	}
+	
 	
 	/** Compute the PA according to the input and the current matrix of weights. */
 	public WritableImage Compute(ArrayList<Integer> input)
@@ -67,7 +76,7 @@ public class PA
             	final int k = x + (y * width);
             	
             	if (outcome.get(k).equals(Foreground))
-            		pw.setColor(x, y, Color.RED);
+            		pw.setColor(x, y, PA.ForeColor);
             }
         }
         
@@ -76,7 +85,7 @@ public class PA
 	
 	
 	/** Compute matrix of weights. */
-	private void Learn()
+	private void Learn(ArrayList<ArrayList<Integer>> patterns)
 	{
 		weights = new ArrayList<ArrayList<Integer>>(nInputs);
 
@@ -103,10 +112,12 @@ public class PA
 		}
 	}
 	
+	
 	/** Initializes inputs. */
-	private void Initialize(ArrayList<WritableImage> patternsImg)
+	private ArrayList<ArrayList<Integer>> Initialize(ArrayList<WritableImage> patternsImg)
 	{
-		patterns = new ArrayList<ArrayList<Integer>>(patternsImg.size());
+		/* Array of input patterns. */
+		ArrayList<ArrayList<Integer>> patterns = new ArrayList<ArrayList<Integer>>(patternsImg.size());
 		
 		for (int i = 0; i < patternsImg.size(); i++)
 		{
@@ -121,7 +132,7 @@ public class PA
 				{
 					Color color = pr.getColor(x, y);
 					
-					if (color.equals(Color.RED))
+					if (color.equals(PA.ForeColor))
 						patterns.get(i).add(Foreground);
 					else
 						patterns.get(i).add(Background);
@@ -134,7 +145,17 @@ public class PA
 				 height = (int) wr.getHeight();
 				 nInputs = (int) (wr.getHeight() * wr.getWidth());
 			}
+			else
+			{
+				// all input patterns must have the same size
+				if ((int) wr.getWidth() != width)
+					throw new IllegalArgumentException();
+				if ((int) wr.getHeight() != height)
+					throw new IllegalArgumentException();
+			}
 		}
+		
+		return patterns;
 	}
 	
 }

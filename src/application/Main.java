@@ -3,6 +3,7 @@ package application;
 import java.util.ArrayList;
 import java.util.Random;
 
+import pa.PA;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -79,7 +80,7 @@ public class Main extends Application
             for (int y = 0; y < PA.HEIGHT / 2; y++) 
             {
                 for (int x = 0; x < PA.WIDTH / 2; x++) 
-                    pw.setColor(x, y, Color.RED);;
+                    pw.setColor(x, y, PA.ForeColor);;
             }
 			
 			patterns.add(wr);
@@ -91,7 +92,7 @@ public class Main extends Application
             for (int y = 0; y < PA.HEIGHT / 2; y++) 
             {
                 for (int x = PA.WIDTH / 2; x < PA.WIDTH; x++) 
-                    pw.setColor(x, y, Color.RED);;
+                    pw.setColor(x, y, PA.ForeColor);;
             }
 			
 			patterns.add(wr);
@@ -103,7 +104,7 @@ public class Main extends Application
             for (int y = PA.HEIGHT / 2; y < PA.HEIGHT; y++) 
             {
                 for (int x = 0; x < PA.WIDTH / 2; x++)
-                    pw.setColor(x, y, Color.RED);;
+                    pw.setColor(x, y, PA.ForeColor);;
             }
 			
 			patterns.add(wr);
@@ -115,7 +116,7 @@ public class Main extends Application
             for (int y = PA.HEIGHT / 2; y < PA.HEIGHT; y++) 
             {
                 for (int x = PA.WIDTH / 2; x < PA.WIDTH; x++)
-                    pw.setColor(x, y, Color.RED);;
+                    pw.setColor(x, y, PA.ForeColor);;
             }
 			
 			patterns.add(wr);
@@ -212,16 +213,23 @@ public class Main extends Application
 		                {
 		                	Color col = pr.getColor(x, y);
 		                	
-		                	if (col.equals(Color.RED))
+		                	if (col.equals(PA.ForeColor))
 		                		input.add(PA.Foreground);
 		                	else
 		                		input.add(PA.Background);
 		                }
 		            }
 					
-					// compute pa and show the outcome
-					WritableImage wr = pa.Compute(input);
-					out_image.setImage(wr);
+					try
+					{
+						// compute pa and show the outcome
+						WritableImage wr = pa.Compute(input);
+						out_image.setImage(wr);
+					}
+					catch (Exception ex)
+					{
+						ex.printStackTrace();
+					}
 				}
 			}	
 		});
@@ -248,10 +256,10 @@ public class Main extends Application
 			int y = rand.nextInt(PA.HEIGHT);
 			Color color = pr.getColor(x, y);
 			
-			if (color.equals(Color.RED))
+			if (color.equals(PA.ForeColor))
 				pw.setColor(x, y, Color.WHITE);
 			else
-				pw.setColor(x, y, Color.RED);
+				pw.setColor(x, y, PA.ForeColor);
 		}
 		
 		// show the deteriored pattern
