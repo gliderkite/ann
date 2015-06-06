@@ -84,10 +84,7 @@
 		<fx:resources id="appRes">
 			<fx:fileset dir="dist" includes="ANN.jar"/>
 			<fx:fileset dir="dist" includes="libs/*"/>
-<<<<<<< HEAD
 		    <fx:fileset dir="dist" includes="patterns/**"/>
-=======
->>>>>>> cb063e785429995d3e3a1da76716d2ac638e40a0
 		</fx:resources>
 	
 		<fx:application id="fxApplication"
