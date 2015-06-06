@@ -22,7 +22,7 @@
 	
 		<mkdir dir="project" />
 		<copy todir="project">
-			<fileset dir="/Users/Marco/Documents/workspace/ANN">
+			<fileset dir=".">
 				<include name="src/**" />
 			</fileset>
 		</copy>
@@ -84,6 +84,7 @@
 		<fx:resources id="appRes">
 			<fx:fileset dir="dist" includes="ANN.jar"/>
 			<fx:fileset dir="dist" includes="libs/*"/>
+		    <fx:fileset dir="dist" includes="patterns/**"/>
 		</fx:resources>
 	
 		<fx:application id="fxApplication"
