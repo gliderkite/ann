@@ -72,7 +72,7 @@
                   <Label layoutX="179.0" layoutY="30.0" text="Patterns" />
                   <Button id="hopfield_next_button" layoutX="23.0" layoutY="17.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="56.0" text="Next" />
                   <Label id="hopfield_index_label" layoutX="86.0" layoutY="22.0" />
-                  <Label id="hopfield_step_label" layoutX="159.0" layoutY="197.0" text="Current Step: " />
+                  <Label id="hopfield_step_label" layoutX="159.0" layoutY="197.0" text="Current Step: 0" />
                </children>
         </AnchorPane>
       </content>

@@ -118,7 +118,7 @@ public class Main extends Application
 		@SuppressWarnings("unchecked")
 		ComboBox<String> patterns_combobox = (ComboBox<String>) scene.lookup(prefix + "patterns_combobox");
 		ImageView out_image = (ImageView) scene.lookup(prefix + "out_image");
-		Label step_label = (Label) scene.lookup(prefix + "degradation_label");
+		Label step_label = (Label) scene.lookup(prefix + "step_label");
 		
 		// combobox selection changed
 		patterns_combobox.valueProperty().addListener((observable, oldStr, newStr) ->
@@ -131,7 +131,10 @@ public class Main extends Application
 				if (prefix.equals("#pa_"))
 					pa = new PA(patterns);
 				else if (prefix.equals("#hopfield_"))
+				{
 					hopfield = new Hopfield(patterns);
+					step_label.setText("Current Step: 0");
+				}
 				
 				degradation_slider.setValue(0);
 				degradation_label.textProperty().setValue("0%");
@@ -163,7 +166,10 @@ public class Main extends Application
 					degradation_label.textProperty().setValue("0%");
 					
 					if (prefix.equals("#hopfield_") && hopfield != null)
+					{
 						hopfield.Reset();
+						step_label.setText("Current Step: 0");
+					}
 				}
 			}	
 		});
@@ -208,6 +214,7 @@ public class Main extends Application
 						else if (hopfield != null && prefix.equals("#hopfield_"))
 						{
 							wr = hopfield.Compute(input);
+							step_label.setText("Current Step: " + hopfield.getStepsNumber());
 						}
 						
 						out_image.setImage(wr);
