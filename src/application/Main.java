@@ -70,58 +70,9 @@ public class Main extends Application
 	private static void CreateImages(String pattern, Scene scene)
 	{
 		patterns.clear();
-		
-		if (pattern.equals("Squares"))
-		{
-			// top left
-			WritableImage wr = new WritableImage(PA.WIDTH, PA.HEIGHT);
-            PixelWriter pw = wr.getPixelWriter();
-            
-            for (int y = 0; y < PA.HEIGHT / 2; y++) 
-            {
-                for (int x = 0; x < PA.WIDTH / 2; x++) 
-                    pw.setColor(x, y, PA.ForeColor);;
-            }
+
+		patterns.addAll(new ReadFile("patterns/" + pattern + ".txt").getImages());
 			
-			patterns.add(wr);
-			
-			// top right
-			wr = new WritableImage(PA.WIDTH, PA.HEIGHT);
-            pw = wr.getPixelWriter();
-            
-            for (int y = 0; y < PA.HEIGHT / 2; y++) 
-            {
-                for (int x = PA.WIDTH / 2; x < PA.WIDTH; x++) 
-                    pw.setColor(x, y, PA.ForeColor);;
-            }
-			
-			patterns.add(wr);
-			
-			// bottom left
-			wr = new WritableImage(PA.WIDTH, PA.HEIGHT);
-            pw = wr.getPixelWriter();
-            
-            for (int y = PA.HEIGHT / 2; y < PA.HEIGHT; y++) 
-            {
-                for (int x = 0; x < PA.WIDTH / 2; x++)
-                    pw.setColor(x, y, PA.ForeColor);;
-            }
-			
-			patterns.add(wr);
-			
-			// bottom right
-			wr = new WritableImage(PA.WIDTH, PA.HEIGHT);
-            pw = wr.getPixelWriter();
-            
-            for (int y = PA.HEIGHT / 2; y < PA.HEIGHT; y++) 
-            {
-                for (int x = PA.WIDTH / 2; x < PA.WIDTH; x++)
-                    pw.setColor(x, y, PA.ForeColor);;
-            }
-			
-			patterns.add(wr);
-		}
-		
 		if (patterns.size() == 0)
 			return;
 		

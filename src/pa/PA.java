@@ -13,10 +13,10 @@ public class PA
 {
 	
 	/* Bitmap width */
-	public final static int WIDTH = 20;
+	public final static int WIDTH = 10;
 	
 	/* Bitmap height */
-	public final static int HEIGHT = 20;
+	public final static int HEIGHT = 10;
 	
 	/* Background input value. */
 	public final static int Background = -1;
