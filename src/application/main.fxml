@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.collections.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="315.0" prefWidth="320.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+  <tabs>
+    <Tab text="PA">
+      <content>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <Slider id="degradation_slider" layoutX="138.0" layoutY="132.0" prefHeight="16.0" prefWidth="126.0" />
+                  <Pane layoutX="14.0" layoutY="50.0" prefHeight="104.0" prefWidth="104.0" style="-fx-border-width: 2; -fx-border-color: black;">
+                     <children>
+                        <ImageView id="input_image" fitHeight="100.0" fitWidth="100.0" layoutX="2.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true" />
+                     </children>
+                  </Pane>
+                  <Pane layoutX="14.0" layoutY="170.0" prefHeight="104.0" prefWidth="104.0" style="-fx-border-width: 2; -fx-border-color: black;">
+                     <children>
+                        <ImageView id="out_image" fitHeight="100.0" fitWidth="100.0" layoutX="2.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true" />
+                     </children>
+                  </Pane>
+                  <Button id="compute_button" layoutX="172.0" layoutY="209.0" mnemonicParsing="false" text="Compute PA" />
+                  <Label layoutX="175.0" layoutY="102.0" text="Degradation" />
+                  <Label id="degradation_label" layoutX="268.0" layoutY="132.0" text="0%" />
+                  <ComboBox id="patterns_combobox" layoutX="139.0" layoutY="54.0" prefWidth="150.0">
+                  <items>
+			        <FXCollections fx:factory="observableArrayList">
+			            <String fx:value="Squares" />
+			        </FXCollections>
+			    </items>
+                  </ComboBox>
+                  <Label layoutX="179.0" layoutY="30.0" text="Patterns" />
+                  <Button id="next_button" layoutX="23.0" layoutY="17.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="56.0" text="Next" />
+                  <Label id="index_label" layoutX="86.0" layoutY="22.0" />
+               </children></AnchorPane>
+      </content>
+    </Tab>
+    <Tab text="Untitled Tab 2">
+      <content>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+      </content>
+    </Tab>
+  </tabs>
+</TabPane>
