@@ -30,12 +30,14 @@ public class PA
 	
 	
 	/* Matrix of weights. */
-	private ArrayList<ArrayList<Integer>> weights;
+	protected ArrayList<ArrayList<Integer>> weights;
 	
+	/* Number of inputs. */
+	protected int nInputs = 0;
 	
-	private int nInputs = 0;
-	private int width = 0;
-	private int height = 0;
+	/* Image size. */
+	protected int width = 0;
+	protected int height = 0;
 	
 	
 	
@@ -85,7 +87,7 @@ public class PA
 	
 	
 	/** Compute matrix of weights. */
-	private void Learn(ArrayList<ArrayList<Integer>> patterns)
+	private final void Learn(ArrayList<ArrayList<Integer>> patterns)
 	{
 		weights = new ArrayList<ArrayList<Integer>>(nInputs);
 
@@ -114,7 +116,7 @@ public class PA
 	
 	
 	/** Initializes inputs. */
-	private ArrayList<ArrayList<Integer>> Initialize(ArrayList<WritableImage> patternsImg)
+	private final ArrayList<ArrayList<Integer>> Initialize(ArrayList<WritableImage> patternsImg)
 	{
 		/* Array of input patterns. */
 		ArrayList<ArrayList<Integer>> patterns = new ArrayList<ArrayList<Integer>>(patternsImg.size());
