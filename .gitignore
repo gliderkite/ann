@@ -1,9 +1,11 @@
 .DS_Store
 bin/
 
-build/*
-!build/build.xml
+build/build/*
+build/deploy/*
+build/project/*
 
+*.jar
 *.ico
 *.png
 *.c
