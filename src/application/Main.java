@@ -114,6 +114,7 @@ public class Main extends Application
 		
 		@SuppressWarnings("unchecked")
 		ComboBox<String> patterns_combobox = (ComboBox<String>) scene.lookup(prefix + "patterns_combobox");
+		ImageView out_image = (ImageView) scene.lookup(prefix + "out_image");
 		
 		// combobox selection changed
 		patterns_combobox.valueProperty().addListener((observable, oldStr, newStr) ->
@@ -127,6 +128,10 @@ public class Main extends Application
 					pa = new PA(patterns);
 				else if (prefix.equals("#hopfield_"))
 					hopfield = new Hopfield(patterns);
+				
+				degradation_slider.setValue(0);
+				degradation_label.textProperty().setValue("0%");
+				out_image.setImage(null);
 			}
 			catch (Exception e)
 			{
@@ -158,7 +163,6 @@ public class Main extends Application
 		
 		
 		Button compute_button = (Button) scene.lookup(prefix + "compute_button");
-		ImageView out_image = (ImageView) scene.lookup(prefix + "out_image");
 		
 		// compute button click
 		compute_button.setOnAction(new EventHandler<ActionEvent>()

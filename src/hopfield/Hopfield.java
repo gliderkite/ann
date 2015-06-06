@@ -58,7 +58,7 @@ public class Hopfield extends PA
 		    if (sum >= 0)
 		    	outcome.set(j, Foreground);
 		    else
-		    	outcome.add(Background);
+		    	outcome.set(j, Background);
 	    }
 		
 		WritableImage wr = new WritableImage(width, height);
