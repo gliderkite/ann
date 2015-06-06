@@ -1,9 +1,11 @@
 package application;
 	
+import pa.PA;
+import hopfield.Hopfield;
+
 import java.util.ArrayList;
 import java.util.Random;
 
-import pa.PA;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -34,6 +36,9 @@ public class Main extends Application
 	
 	/* Pattern Associator */
 	private static PA pa;
+	
+	/* Hopfield Neural Network. */
+	private static Hopfield hopfield;
 	
 	
 	
@@ -67,7 +72,7 @@ public class Main extends Application
 	
 	
 	/** Create pattern images. */
-	private static void CreateImages(String pattern, Scene scene)
+	private static void CreateImages(String pattern, Scene scene, String prefix)
 	{
 		patterns.clear();
 
@@ -77,20 +82,26 @@ public class Main extends Application
 			return;
 		
 		// show first
-		ImageView input_image = (ImageView) scene.lookup("#input_image");
+		ImageView input_image = (ImageView) scene.lookup(prefix + "input_image");
 		input_image.setImage(patterns.get(0));
 		index = 0;
 		
-		Label index_label = (Label) scene.lookup("#index_label");
+		Label index_label = (Label) scene.lookup(prefix + "index_label");
 		index_label.setText("1/" + patterns.size());
 	}
 	
 	
-	@SuppressWarnings("unchecked")
 	private static void SetEventHandlers(Scene scene)
 	{
-		Slider degradation_slider = (Slider) scene.lookup("#degradation_slider");
-		Label degradation_label = (Label) scene.lookup("#degradation_label");
+		SetEventHandlersPAHop(scene, "#pa_");
+		SetEventHandlersPAHop(scene, "#hopfield_");
+	}
+	
+	
+	private static void SetEventHandlersPAHop(Scene scene, String prefix)
+	{
+		Slider degradation_slider = (Slider) scene.lookup(prefix + "degradation_slider");
+		Label degradation_label = (Label) scene.lookup(prefix + "degradation_label");
 		
 		// slider value changed
 		degradation_slider.valueProperty().addListener((observable, oldValue, newValue) ->
@@ -98,19 +109,24 @@ public class Main extends Application
 			int val = newValue.intValue();
 			degradation_label.textProperty().setValue(new Integer(val).toString() + "%");
 			
-			alter(val, scene);
+			alter(val, scene, prefix);
 		});
 		
-		ComboBox<String> patterns_combobox = (ComboBox<String>) scene.lookup("#patterns_combobox");
+		@SuppressWarnings("unchecked")
+		ComboBox<String> patterns_combobox = (ComboBox<String>) scene.lookup(prefix + "patterns_combobox");
 		
 		// combobox selection changed
 		patterns_combobox.valueProperty().addListener((observable, oldStr, newStr) ->
 		{
 			try
 			{
-				CreateImages(newStr, scene);
+				CreateImages(newStr, scene, prefix);
+				
 				// init inputs and compute weights
-				pa = new PA(patterns);
+				if (prefix.equals("#pa_"))
+					pa = new PA(patterns);
+				else if (prefix.equals("#hopfield_"))
+					hopfield = new Hopfield(patterns);
 			}
 			catch (Exception e)
 			{
@@ -118,9 +134,9 @@ public class Main extends Application
 			}
 		});
 		
-		Button next_button = (Button) scene.lookup("#next_button");
-		ImageView input_image = (ImageView) scene.lookup("#input_image");
-		Label index_label = (Label) scene.lookup("#index_label");
+		Button next_button = (Button) scene.lookup(prefix + "next_button");
+		ImageView input_image = (ImageView) scene.lookup(prefix + "input_image");
+		Label index_label = (Label) scene.lookup(prefix + "index_label");
 		
 		// next button click
 		next_button.setOnAction(new EventHandler<ActionEvent>()
@@ -141,8 +157,8 @@ public class Main extends Application
 		});
 		
 		
-		Button compute_button = (Button) scene.lookup("#compute_button");
-		ImageView out_image = (ImageView) scene.lookup("#out_image");
+		Button compute_button = (Button) scene.lookup(prefix + "compute_button");
+		ImageView out_image = (ImageView) scene.lookup(prefix + "out_image");
 		
 		// compute button click
 		compute_button.setOnAction(new EventHandler<ActionEvent>()
@@ -150,7 +166,7 @@ public class Main extends Application
 			@Override
 			public void handle(ActionEvent e) 
 			{
-				if (patterns.size() > 0 && pa != null)
+				if (patterns.size() > 0)
 				{
 					ArrayList<Integer> input = new ArrayList<Integer>();
 					
@@ -173,8 +189,14 @@ public class Main extends Application
 					
 					try
 					{
-						// compute pa and show the outcome
-						WritableImage wr = pa.Compute(input);
+						// compute pa/hopfield and show the outcome
+						WritableImage wr = null;
+						
+						if (pa != null && prefix.equals("#pa_"))
+							wr = pa.Compute(input);
+						else if (hopfield != null && prefix.equals("#hopfield_"))
+							wr = hopfield.Compute(input);
+						
 						out_image.setImage(wr);
 					}
 					catch (Exception ex)
@@ -187,7 +209,7 @@ public class Main extends Application
 	}
 
 
-	private static void alter(int deterioration, Scene scene)
+	private static void alter(int deterioration, Scene scene, String prefix)
 	{
 		WritableImage wr = patterns.get(index % patterns.size());
 		PixelReader pr = wr.getPixelReader();
@@ -214,7 +236,7 @@ public class Main extends Application
 		}
 		
 		// show the deteriored pattern
-		ImageView input_image = (ImageView) scene.lookup("#input_image");
+		ImageView input_image = (ImageView) scene.lookup(prefix + "input_image");
 		input_image.setImage(copy);
 	}
 

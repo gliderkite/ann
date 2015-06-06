@@ -5,7 +5,6 @@
 			<filelist>
 				<file name="${java.home}\..\lib\ant-javafx.jar"/>
 				<file name="${java.home}\lib\jfxrt.jar"/>
-			    <file name="${basedir}"/>
 			</filelist>
 		</path>
 	
@@ -23,7 +22,7 @@
 	
 		<mkdir dir="project" />
 		<copy todir="project">
-			<fileset dir="..">
+			<fileset dir="/Users/Marco/Documents/workspace/ANN">
 				<include name="src/**" />
 			</fileset>
 		</copy>
@@ -85,7 +84,10 @@
 		<fx:resources id="appRes">
 			<fx:fileset dir="dist" includes="ANN.jar"/>
 			<fx:fileset dir="dist" includes="libs/*"/>
+<<<<<<< HEAD
 		    <fx:fileset dir="dist" includes="patterns/**"/>
+=======
+>>>>>>> cb063e785429995d3e3a1da76716d2ac638e40a0
 		</fx:resources>
 	
 		<fx:application id="fxApplication"
@@ -120,7 +122,7 @@
 			includeDT="false"
 			offlineAllowed="true"
 			outdir="${basedir}/deploy"
-			outfile="ANN" nativeBundles="none"
+			outfile="ANN" nativeBundles="dmg"
 			updatemode="background" >
 	
 			<fx:platform basedir="${java.home}"/>
