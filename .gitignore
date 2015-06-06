@@ -1,6 +1,9 @@
 .DS_Store
 bin/
-build/
+
+build/*
+!build/build.xml
+
 *.ico
 *.png
 *.c
