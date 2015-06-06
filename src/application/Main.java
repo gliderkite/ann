@@ -157,6 +157,9 @@ public class Main extends Application
 					index_label.setText(idx + "/" + patterns.size());
 					degradation_slider.setValue(0);
 					degradation_label.textProperty().setValue("0%");
+					
+					if (prefix.equals("#hopfield_") && hopfield != null)
+						hopfield.Reset();
 				}
 			}	
 		});

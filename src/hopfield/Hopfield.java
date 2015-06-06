@@ -26,6 +26,12 @@ public class Hopfield extends PA
 	}
 	
 	
+	public void Reset()
+	{
+		outcome = null;
+	}
+	
+	
 	/** Compute the PA according to the input and the current matrix of weights. */
 	@Override
 	public WritableImage Compute(ArrayList<Integer> input)

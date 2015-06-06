@@ -31,7 +31,7 @@
 			        <FXCollections fx:factory="observableArrayList">
 			            <String fx:value="Squares" />
 			            <String fx:value="Numbers" />
-			            <String fx:value="Numbers_small_set" />
+			            <String fx:value="Numbers (small set)" />
 			        </FXCollections>
 			    </items>
                   </ComboBox>
