@@ -44,7 +44,7 @@
     </Tab>
     <Tab text="Hopfield">
       <content>
-        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" >
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
         	<children>
                   <Slider id="hopfield_degradation_slider" layoutX="138.0" layoutY="132.0" prefHeight="16.0" prefWidth="126.0" />
                   <Pane layoutX="14.0" layoutY="50.0" prefHeight="104.0" prefWidth="104.0" style="-fx-border-width: 2; -fx-border-color: black;">
@@ -57,7 +57,7 @@
                         <ImageView id="hopfield_out_image" fitHeight="100.0" fitWidth="100.0" layoutX="2.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true" />
                      </children>
                   </Pane>
-                  <Button id="hopfield_compute_button" layoutX="172.0" layoutY="209.0" mnemonicParsing="false" text="Compute PA" />
+                  <Button id="hopfield_compute_button" layoutX="160.0" layoutY="222.0" mnemonicParsing="false" text="Next Step" />
                   <Label layoutX="175.0" layoutY="102.0" text="Degradation" />
                   <Label id="hopfield_degradation_label" layoutX="268.0" layoutY="132.0" text="0%" />
                   <ComboBox id="hopfield_patterns_combobox" layoutX="139.0" layoutY="54.0" prefWidth="150.0">
@@ -72,6 +72,7 @@
                   <Label layoutX="179.0" layoutY="30.0" text="Patterns" />
                   <Button id="hopfield_next_button" layoutX="23.0" layoutY="17.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="56.0" text="Next" />
                   <Label id="hopfield_index_label" layoutX="86.0" layoutY="22.0" />
+                  <Label id="hopfield_step_label" layoutX="159.0" layoutY="197.0" text="Current Step: " />
                </children>
         </AnchorPane>
       </content>

@@ -118,6 +118,7 @@ public class Main extends Application
 		@SuppressWarnings("unchecked")
 		ComboBox<String> patterns_combobox = (ComboBox<String>) scene.lookup(prefix + "patterns_combobox");
 		ImageView out_image = (ImageView) scene.lookup(prefix + "out_image");
+		Label step_label = (Label) scene.lookup(prefix + "degradation_label");
 		
 		// combobox selection changed
 		patterns_combobox.valueProperty().addListener((observable, oldStr, newStr) ->
@@ -205,7 +206,9 @@ public class Main extends Application
 						if (pa != null && prefix.equals("#pa_"))
 							wr = pa.Compute(input);
 						else if (hopfield != null && prefix.equals("#hopfield_"))
+						{
 							wr = hopfield.Compute(input);
+						}
 						
 						out_image.setImage(wr);
 					}

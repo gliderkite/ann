@@ -13,6 +13,8 @@ public class Hopfield extends PA
 	/* Network output. */
 	private ArrayList<Integer> outcome;
 	
+	/* Number of the current step. */
+	private int nSteps = 0;
 	
 	
 	/** Initializes a new instance of the class. */
@@ -29,6 +31,13 @@ public class Hopfield extends PA
 	public void Reset()
 	{
 		outcome = null;
+		nSteps = 0;
+	}
+	
+	
+	public int getStepsNumber()
+	{
+		return nSteps;
 	}
 	
 	
@@ -54,6 +63,8 @@ public class Hopfield extends PA
 			output = outcome;
 		}
 		
+		ArrayList<Integer> temp = new ArrayList<Integer>(nInputs);
+		
 		for (int j = 0; j < nInputs; j++)
 	    {
 		    int sum = 0;
@@ -62,10 +73,14 @@ public class Hopfield extends PA
 				sum += output.get(i) * weights.get(i).get(j);
 		    
 		    if (sum >= 0)
-		    	outcome.set(j, Foreground);
+		    	temp.add(Foreground);
 		    else
-		    	outcome.set(j, Background);
+		    	temp.add(Background);
 	    }
+		
+		// store outcome
+		for (int j = 0; j < nInputs; j++)
+			outcome.set(j, temp.get(j));
 		
 		WritableImage wr = new WritableImage(WIDTH, HEIGHT);
         PixelWriter pw = wr.getPixelWriter();
@@ -80,6 +95,8 @@ public class Hopfield extends PA
             		pw.setColor(x, y, PA.ForeColor);
             }
         }
+        
+        nSteps++;
         
         return wr;
 	}
