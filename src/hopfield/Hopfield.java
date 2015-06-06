@@ -26,6 +26,12 @@ public class Hopfield extends PA
 	}
 	
 	
+	public void Reset()
+	{
+		outcome = null;
+	}
+	
+	
 	/** Compute the PA according to the input and the current matrix of weights. */
 	@Override
 	public WritableImage Compute(ArrayList<Integer> input)
@@ -58,17 +64,17 @@ public class Hopfield extends PA
 		    if (sum >= 0)
 		    	outcome.set(j, Foreground);
 		    else
-		    	outcome.add(Background);
+		    	outcome.set(j, Background);
 	    }
 		
-		WritableImage wr = new WritableImage(width, height);
+		WritableImage wr = new WritableImage(WIDTH, HEIGHT);
         PixelWriter pw = wr.getPixelWriter();
         
-        for (int y = 0; y < height; y++)
+        for (int y = 0; y < HEIGHT; y++)
         {
-        	for (int x = 0; x < width; x++) 
+        	for (int x = 0; x < WIDTH; x++) 
             {
-            	final int k = x + (y * width);
+            	final int k = x + (y * WIDTH);
             	
             	if (outcome.get(k).equals(Foreground))
             		pw.setColor(x, y, PA.ForeColor);

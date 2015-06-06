@@ -35,9 +35,9 @@ public class PA
 	/* Number of inputs. */
 	protected int nInputs = 0;
 	
-	/* Image size. */
+	/* Image size.
 	protected int width = 0;
-	protected int height = 0;
+	protected int height = 0; */
 	
 	
 	
@@ -68,14 +68,14 @@ public class PA
 	    }
 		
 		
-		WritableImage wr = new WritableImage(width, height);
+		WritableImage wr = new WritableImage(WIDTH, HEIGHT);
         PixelWriter pw = wr.getPixelWriter();
         
-        for (int y = 0; y < height; y++)
+        for (int y = 0; y < HEIGHT; y++)
         {
-        	for (int x = 0; x < width; x++) 
+        	for (int x = 0; x < WIDTH; x++) 
             {
-            	final int k = x + (y * width);
+            	final int k = x + (y * WIDTH);
             	
             	if (outcome.get(k).equals(Foreground))
             		pw.setColor(x, y, PA.ForeColor);
@@ -142,19 +142,13 @@ public class PA
 			}
 			
 			if (nInputs == 0)
-			{
-				 width = (int) wr.getWidth();
-				 height = (int) wr.getHeight();
-				 nInputs = (int) (wr.getHeight() * wr.getWidth());
-			}
-			else
-			{
-				// all input patterns must have the same size
-				if ((int) wr.getWidth() != width)
-					throw new IllegalArgumentException();
-				if ((int) wr.getHeight() != height)
-					throw new IllegalArgumentException();
-			}
+				nInputs = WIDTH * HEIGHT;
+			
+			// all input patterns must have the same size
+			if ((int) wr.getWidth() != WIDTH)
+				throw new IllegalArgumentException();
+			if ((int) wr.getHeight() != HEIGHT)
+				throw new IllegalArgumentException();
 		}
 		
 		return patterns;
