@@ -1,11 +1,11 @@
 package application;
 	
+import pa.PA;
 import hopfield.Hopfield;
 
 import java.util.ArrayList;
 import java.util.Random;
 
-import pa.PA;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -121,8 +121,12 @@ public class Main extends Application
 			try
 			{
 				CreateImages(newStr, scene, prefix);
+				
 				// init inputs and compute weights
-				pa = new PA(patterns);
+				if (prefix.equals("#pa_"))
+					pa = new PA(patterns);
+				else if (prefix.equals("#hopfield_"))
+					hopfield = new Hopfield(patterns);
 			}
 			catch (Exception e)
 			{
@@ -162,7 +166,7 @@ public class Main extends Application
 			@Override
 			public void handle(ActionEvent e) 
 			{
-				if (patterns.size() > 0 && pa != null)
+				if (patterns.size() > 0)
 				{
 					ArrayList<Integer> input = new ArrayList<Integer>();
 					
@@ -185,8 +189,14 @@ public class Main extends Application
 					
 					try
 					{
-						// compute pa and show the outcome
-						WritableImage wr = pa.Compute(input);
+						// compute pa/hopfield and show the outcome
+						WritableImage wr = null;
+						
+						if (pa != null && prefix.equals("#pa_"))
+							wr = pa.Compute(input);
+						else if (hopfield != null && prefix.equals("#hopfield_"))
+							wr = hopfield.Compute(input);
+						
 						out_image.setImage(wr);
 					}
 					catch (Exception ex)
