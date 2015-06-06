@@ -23,7 +23,7 @@
 	
 		<mkdir dir="project" />
 		<copy todir="project">
-			<fileset dir=".">
+			<fileset dir="/Users/Marco/Documents/workspace/ANN">
 				<include name="src/**" />
 			</fileset>
 		</copy>
