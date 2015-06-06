@@ -110,6 +110,9 @@ public class Main extends Application
 			degradation_label.textProperty().setValue(new Integer(val).toString() + "%");
 			
 			alter(val, scene, prefix);
+			
+			if (prefix.equals("#hopfield_") && hopfield != null)
+				hopfield.Reset();
 		});
 		
 		@SuppressWarnings("unchecked")

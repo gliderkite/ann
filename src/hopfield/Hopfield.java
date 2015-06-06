@@ -67,14 +67,14 @@ public class Hopfield extends PA
 		    	outcome.set(j, Background);
 	    }
 		
-		WritableImage wr = new WritableImage(width, height);
+		WritableImage wr = new WritableImage(WIDTH, HEIGHT);
         PixelWriter pw = wr.getPixelWriter();
         
-        for (int y = 0; y < height; y++)
+        for (int y = 0; y < HEIGHT; y++)
         {
-        	for (int x = 0; x < width; x++) 
+        	for (int x = 0; x < WIDTH; x++) 
             {
-            	final int k = x + (y * width);
+            	final int k = x + (y * WIDTH);
             	
             	if (outcome.get(k).equals(Foreground))
             		pw.setColor(x, y, PA.ForeColor);
