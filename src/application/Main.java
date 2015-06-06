@@ -71,7 +71,7 @@ public class Main extends Application
 	{
 		patterns.clear();
 
-		patterns.addAll(new ReadFile("patterns/" + pattern + ".txt").getImages());
+		patterns.addAll(new ReadFile("resources/patterns/" + pattern + ".txt").getImages());
 			
 		if (patterns.size() == 0)
 			return;
