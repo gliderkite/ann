@@ -35,10 +35,6 @@ public class PA
 	/* Number of inputs. */
 	protected int nInputs = 0;
 	
-	/* Image size.
-	protected int width = 0;
-	protected int height = 0; */
-	
 	
 	
 	/** Initializes a new instance of the class. */
@@ -126,7 +122,16 @@ public class PA
 			WritableImage wr = patternsImg.get(i);
 			PixelReader pr = wr.getPixelReader();
 			
-			patterns.add(new ArrayList<Integer>());
+			// all input patterns must have the same size
+			if ((int) wr.getWidth() != WIDTH)
+				throw new IllegalArgumentException();
+			if ((int) wr.getHeight() != HEIGHT)
+				throw new IllegalArgumentException();
+			
+			if (nInputs == 0)
+				nInputs = WIDTH * HEIGHT;
+			
+			patterns.add(new ArrayList<Integer>(nInputs));
 			
 			for (int y = 0; y < wr.getHeight(); y++)
 			{
@@ -140,15 +145,6 @@ public class PA
 						patterns.get(i).add(Background);
 				}
 			}
-			
-			if (nInputs == 0)
-				nInputs = WIDTH * HEIGHT;
-			
-			// all input patterns must have the same size
-			if ((int) wr.getWidth() != WIDTH)
-				throw new IllegalArgumentException();
-			if ((int) wr.getHeight() != HEIGHT)
-				throw new IllegalArgumentException();
 		}
 		
 		return patterns;

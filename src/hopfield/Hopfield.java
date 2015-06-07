@@ -10,11 +10,13 @@ import pa.PA;
 /** Hopfield Neural Network. */
 public class Hopfield extends PA
 {
+	
 	/* Network output. */
 	private ArrayList<Integer> outcome;
 	
 	/* Number of the current step. */
 	private int nSteps = 0;
+	
 	
 	
 	/** Initializes a new instance of the class. */
@@ -28,6 +30,7 @@ public class Hopfield extends PA
 	}
 	
 	
+	/** Resets the neural network. */
 	public void Reset()
 	{
 		outcome = null;
@@ -35,6 +38,7 @@ public class Hopfield extends PA
 	}
 	
 	
+	/** Gets the current step number. */
 	public int getStepsNumber()
 	{
 		return nSteps;
@@ -50,16 +54,11 @@ public class Hopfield extends PA
 		if (outcome == null)
 		{
 			// this is the first step
-			outcome = new ArrayList<Integer>(nInputs);
-			
-			for (int j = 0; j < nInputs; j++)
-				outcome.add(0);
-			
 			output = input;
 		}
 		else
 		{
-			// this method has already been called
+			// this method has already been called (recurrent neural network)
 			output = outcome;
 		}
 		
@@ -79,8 +78,7 @@ public class Hopfield extends PA
 	    }
 		
 		// store outcome
-		for (int j = 0; j < nInputs; j++)
-			outcome.set(j, temp.get(j));
+		outcome = temp;
 		
 		WritableImage wr = new WritableImage(WIDTH, HEIGHT);
         PixelWriter pw = wr.getPixelWriter();

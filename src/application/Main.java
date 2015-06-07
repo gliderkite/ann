@@ -71,8 +71,9 @@ public class Main extends Application
 	}
 	
 	
+	
 	/** Create pattern images. */
-	private static void CreateImages(String pattern, Scene scene, String prefix)
+	private static final void CreateImages(String pattern, Scene scene, String prefix)
 	{
 		patterns.clear();
 
@@ -91,14 +92,16 @@ public class Main extends Application
 	}
 	
 	
-	private static void SetEventHandlers(Scene scene)
+	/** Sets controls events handlers */
+	private static final void SetEventHandlers(Scene scene)
 	{
 		SetEventHandlersPAHop(scene, "#pa_");
 		SetEventHandlersPAHop(scene, "#hopfield_");
 	}
 	
 	
-	private static void SetEventHandlersPAHop(Scene scene, String prefix)
+	/** Sets PA/Hopfield events handlers. */
+	private static final void SetEventHandlersPAHop(Scene scene, String prefix)
 	{
 		Slider degradation_slider = (Slider) scene.lookup(prefix + "degradation_slider");
 		Label degradation_label = (Label) scene.lookup(prefix + "degradation_label");
@@ -188,24 +191,28 @@ public class Main extends Application
 			{
 				if (patterns.size() > 0)
 				{
-					ArrayList<Integer> input = new ArrayList<Integer>();
+					ArrayList<Integer> input = null;
 					
-					Image current = input_image.getImage();
-					PixelReader pr = current.getPixelReader();
-					
-					// compute the input according to the deteriored image
-					for (int y = 0; y < PA.HEIGHT; y++) 
-		            {
-		                for (int x = 0; x < PA.WIDTH; x++) 
-		                {
-		                	Color col = pr.getColor(x, y);
-		                	
-		                	if (col.equals(PA.ForeColor))
-		                		input.add(PA.Foreground);
-		                	else
-		                		input.add(PA.Background);
-		                }
-		            }
+					if (prefix.equals("#pa_") || (prefix.equals("#hopfield_") && hopfield.getStepsNumber() == 0))
+					{
+						input = new ArrayList<Integer>(PA.HEIGHT * PA.WIDTH);
+						Image current = input_image.getImage();
+						PixelReader pr = current.getPixelReader();
+						
+						// compute the input according to the deteriorated image
+						for (int y = 0; y < PA.HEIGHT; y++) 
+			            {
+			                for (int x = 0; x < PA.WIDTH; x++) 
+			                {
+			                	Color col = pr.getColor(x, y);
+			                	
+			                	if (col.equals(PA.ForeColor))
+			                		input.add(PA.Foreground);
+			                	else
+			                		input.add(PA.Background);
+			                }
+			            }
+					}
 					
 					try
 					{
@@ -232,7 +239,8 @@ public class Main extends Application
 	}
 
 
-	private static void alter(int deterioration, Scene scene, String prefix)
+	/** ALters the current input image. */
+	private static final void alter(int deterioration, Scene scene, String prefix)
 	{
 		WritableImage wr = patterns.get(index % patterns.size());
 		PixelReader pr = wr.getPixelReader();
