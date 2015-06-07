@@ -43,7 +43,7 @@ public class Main extends Application
 	private static Hopfield hopfield;
 
 	/* Selected Image Size. */
-	private static int selected_size = 20;
+	private final static int SELECTED_SIZE = 40;
 	
 	/* File Images HEIGHT and WIDTH value */
 	public final static int FILE_IMG_DIM = 10;
@@ -98,7 +98,7 @@ public class Main extends Application
 		
 		patterns.clear();
 
-		patterns.addAll(new ReadFile("patterns/" + pattern + ".txt", selected_size / Main.FILE_IMG_DIM).getImages());
+		patterns.addAll(new ReadFile("patterns/" + pattern + ".txt", SELECTED_SIZE / Main.FILE_IMG_DIM).getImages());
 			
 		if (patterns.size() == 0)
 			return;
@@ -157,10 +157,10 @@ public class Main extends Application
 				
 				// init inputs and compute weights
 				if (prefix.equals("#pa_"))
-					pa = new PA(patterns_pa, selected_size);
+					pa = new PA(patterns_pa, SELECTED_SIZE);
 				else if (prefix.equals("#hopfield_"))
 				{
-					hopfield = new Hopfield(patterns_hopfield, selected_size);
+					hopfield = new Hopfield(patterns_hopfield, SELECTED_SIZE);
 					step_label.setText("Current Step: 0");
 				}
 				
