@@ -39,6 +39,12 @@ public class Main extends Application
 	
 	/* Hopfield Neural Network. */
 	private static Hopfield hopfield;
+
+	/* Selected Image Size. */
+	private static int selected_size = 20;
+	
+	/* File Images HEIGHT and WIDTH value */
+	public final static int FILE_IMG_DIM = 10;
 	
 	
 	
@@ -77,7 +83,7 @@ public class Main extends Application
 	{
 		patterns.clear();
 
-		patterns.addAll(new ReadFile("patterns/" + pattern + ".txt").getImages());
+		patterns.addAll(new ReadFile("patterns/" + pattern + ".txt", selected_size / Main.FILE_IMG_DIM).getImages());
 			
 		if (patterns.size() == 0)
 			return;
@@ -135,10 +141,10 @@ public class Main extends Application
 				
 				// init inputs and compute weights
 				if (prefix.equals("#pa_"))
-					pa = new PA(patterns);
+					pa = new PA(patterns, selected_size);
 				else if (prefix.equals("#hopfield_"))
 				{
-					hopfield = new Hopfield(patterns);
+					hopfield = new Hopfield(patterns, selected_size);
 					step_label.setText("Current Step: 0");
 				}
 				
@@ -195,14 +201,14 @@ public class Main extends Application
 					
 					if (prefix.equals("#pa_") || (prefix.equals("#hopfield_") && hopfield.getStepsNumber() == 0))
 					{
-						input = new ArrayList<Integer>(PA.HEIGHT * PA.WIDTH);
+						input = new ArrayList<Integer>(PA.DIM * PA.DIM);
 						Image current = input_image.getImage();
 						PixelReader pr = current.getPixelReader();
 						
 						// compute the input according to the deteriorated image
-						for (int y = 0; y < PA.HEIGHT; y++) 
+						for (int y = 0; y < PA.DIM; y++) 
 			            {
-			                for (int x = 0; x < PA.WIDTH; x++) 
+			                for (int x = 0; x < PA.DIM; x++) 
 			                {
 			                	Color col = pr.getColor(x, y);
 			                	
@@ -246,18 +252,18 @@ public class Main extends Application
 		PixelReader pr = wr.getPixelReader();
 		
 		// clone the original pattern
-		WritableImage copy = new WritableImage(pr, PA.WIDTH, PA.HEIGHT);
+		WritableImage copy = new WritableImage(pr, PA.DIM, PA.DIM);
 		PixelWriter pw = copy.getPixelWriter();
 		pr = copy.getPixelReader();
         
-		deterioration = deterioration * (PA.WIDTH * PA.HEIGHT) / 100;
+		deterioration = deterioration * (PA.DIM * PA.DIM) / 100;
 		Random rand = new Random();
 		
 		// alter the pattern
 		for (int i = 0; i < deterioration; i++)
 		{
-			int x = rand.nextInt(PA.WIDTH);
-			int y = rand.nextInt(PA.HEIGHT);
+			int x = rand.nextInt(PA.DIM);
+			int y = rand.nextInt(PA.DIM);
 			Color color = pr.getColor(x, y);
 			
 			if (color.equals(PA.ForeColor))

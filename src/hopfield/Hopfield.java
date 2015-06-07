@@ -20,9 +20,9 @@ public class Hopfield extends PA
 	
 	
 	/** Initializes a new instance of the class. */
-	public Hopfield(ArrayList<WritableImage> patternsImg) 
+	public Hopfield(ArrayList<WritableImage> patternsImg, int size) 
 	{
-		super(patternsImg);
+		super(patternsImg, size);
 		
 		// clears the diagonal
 		for (int i = 0; i < nInputs; i++)
@@ -80,14 +80,14 @@ public class Hopfield extends PA
 		// store outcome
 		outcome = temp;
 		
-		WritableImage wr = new WritableImage(WIDTH, HEIGHT);
+		WritableImage wr = new WritableImage(DIM, DIM);
         PixelWriter pw = wr.getPixelWriter();
         
-        for (int y = 0; y < HEIGHT; y++)
+        for (int y = 0; y < DIM; y++)
         {
-        	for (int x = 0; x < WIDTH; x++) 
+        	for (int x = 0; x < DIM; x++) 
             {
-            	final int k = x + (y * WIDTH);
+            	final int k = x + (y * DIM);
             	
             	if (outcome.get(k).equals(Foreground))
             		pw.setColor(x, y, PA.ForeColor);

@@ -12,11 +12,8 @@ import javafx.scene.paint.Color;
 public class PA 
 {
 	
-	/* Bitmap width */
-	public final static int WIDTH = 20;
-	
-	/* Bitmap height */
-	public final static int HEIGHT = 20;
+	/* Bitmap WIDTH and HEIGHT */
+	public static int DIM;
 	
 	/* Background input value. */
 	public final static int Background = -1;
@@ -38,8 +35,9 @@ public class PA
 	
 	
 	/** Initializes a new instance of the class. */
-	public PA(ArrayList<WritableImage> patternsImg)
+	public PA(ArrayList<WritableImage> patternsImg, int size)
 	{
+		DIM = size;
 		ArrayList<ArrayList<Integer>> patterns = Initialize(patternsImg);
 		Learn(patterns);
 	}
@@ -64,14 +62,14 @@ public class PA
 	    }
 		
 		
-		WritableImage wr = new WritableImage(WIDTH, HEIGHT);
+		WritableImage wr = new WritableImage(DIM, DIM);
         PixelWriter pw = wr.getPixelWriter();
         
-        for (int y = 0; y < HEIGHT; y++)
+        for (int y = 0; y < DIM; y++)
         {
-        	for (int x = 0; x < WIDTH; x++) 
+        	for (int x = 0; x < DIM; x++) 
             {
-            	final int k = x + (y * WIDTH);
+            	final int k = x + (y * DIM);
             	
             	if (outcome.get(k).equals(Foreground))
             		pw.setColor(x, y, PA.ForeColor);
@@ -123,13 +121,13 @@ public class PA
 			PixelReader pr = wr.getPixelReader();
 			
 			// all input patterns must have the same size
-			if ((int) wr.getWidth() != WIDTH)
+			if ((int) wr.getWidth() != DIM)
 				throw new IllegalArgumentException();
-			if ((int) wr.getHeight() != HEIGHT)
+			if ((int) wr.getHeight() != DIM)
 				throw new IllegalArgumentException();
 			
 			if (nInputs == 0)
-				nInputs = WIDTH * HEIGHT;
+				nInputs = DIM * DIM;
 			
 			patterns.add(new ArrayList<Integer>(nInputs));
 			
