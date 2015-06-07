@@ -29,10 +29,12 @@ public class Main extends Application
 {
 	
 	/* Array of patterns */
-	private static ArrayList<WritableImage> patterns = new ArrayList<WritableImage>();
+	private static ArrayList<WritableImage> patterns_pa = new ArrayList<WritableImage>();
+	private static ArrayList<WritableImage> patterns_hopfield = new ArrayList<WritableImage>();
 	
 	/* Index of the last selected pattern */
-	private static int index;
+	private static int index_pa;
+	private static int index_hopfield;
 	
 	/* Pattern Associator */
 	private static PA pa;
@@ -75,6 +77,19 @@ public class Main extends Application
 	/** Create pattern images. */
 	private static final void CreateImages(String pattern, Scene scene, String prefix)
 	{
+		ArrayList<WritableImage> patterns = null;
+		
+		if (prefix.equals("#pa_"))
+		{
+			index_pa = 0;
+			patterns = patterns_pa;
+		}
+		else if (prefix.equals("#hopfield_"))
+		{
+			index_hopfield = 0;
+			patterns = patterns_hopfield;
+		}
+		
 		patterns.clear();
 
 		patterns.addAll(new ReadFile("patterns/" + pattern + ".txt").getImages());
@@ -85,7 +100,8 @@ public class Main extends Application
 		// show first
 		ImageView input_image = (ImageView) scene.lookup(prefix + "input_image");
 		input_image.setImage(patterns.get(0));
-		index = 0;
+		
+		
 		
 		Label index_label = (Label) scene.lookup(prefix + "index_label");
 		index_label.setText("1/" + patterns.size());
@@ -126,7 +142,7 @@ public class Main extends Application
 		ComboBox<String> patterns_combobox = (ComboBox<String>) scene.lookup(prefix + "patterns_combobox");
 		ImageView out_image = (ImageView) scene.lookup(prefix + "out_image");
 		
-		// combobox selection changed
+		// combo-box selection changed
 		patterns_combobox.valueProperty().addListener((observable, oldStr, newStr) ->
 		{
 			try
@@ -135,10 +151,10 @@ public class Main extends Application
 				
 				// init inputs and compute weights
 				if (prefix.equals("#pa_"))
-					pa = new PA(patterns);
+					pa = new PA(patterns_pa);
 				else if (prefix.equals("#hopfield_"))
 				{
-					hopfield = new Hopfield(patterns);
+					hopfield = new Hopfield(patterns_hopfield);
 					step_label.setText("Current Step: 0");
 				}
 				
@@ -162,10 +178,24 @@ public class Main extends Application
 			@Override
 			public void handle(ActionEvent e) 
 			{
+				int index = -1;
+				ArrayList<WritableImage> patterns = null;
+				
+				if (prefix.equals("#pa_"))
+				{
+					index = ++index_pa;
+					patterns = patterns_pa;
+				}
+				else if (prefix.equals("#hopfield_"))
+				{
+					index = ++index_hopfield;
+					patterns = patterns_hopfield;
+				}
+				
 				if (patterns.size() > 0)
 				{
 					// show the next image
-					input_image.setImage(patterns.get(++index % patterns.size()));
+					input_image.setImage(patterns.get(index % patterns.size()));
 					String idx = new Integer(index % patterns.size() + 1).toString();
 					index_label.setText(idx + "/" + patterns.size());
 					degradation_slider.setValue(0);
@@ -189,52 +219,54 @@ public class Main extends Application
 			@Override
 			public void handle(ActionEvent e) 
 			{
-				if (patterns.size() > 0)
+				if (prefix.equals("#pa_") && patterns_pa.size() == 0)
+					return;
+				else if (prefix.equals("#hopfield_") && patterns_hopfield.size() == 0)
+					return;
+				
+				ArrayList<Integer> input = null;
+				
+				if (prefix.equals("#pa_") || (prefix.equals("#hopfield_") && hopfield.getStepsNumber() == 0))
 				{
-					ArrayList<Integer> input = null;
+					input = new ArrayList<Integer>(PA.HEIGHT * PA.WIDTH);
+					Image current = input_image.getImage();
+					PixelReader pr = current.getPixelReader();
 					
-					if (prefix.equals("#pa_") || (prefix.equals("#hopfield_") && hopfield.getStepsNumber() == 0))
-					{
-						input = new ArrayList<Integer>(PA.HEIGHT * PA.WIDTH);
-						Image current = input_image.getImage();
-						PixelReader pr = current.getPixelReader();
-						
-						// compute the input according to the deteriorated image
-						for (int y = 0; y < PA.HEIGHT; y++) 
-			            {
-			                for (int x = 0; x < PA.WIDTH; x++) 
-			                {
-			                	Color col = pr.getColor(x, y);
-			                	
-			                	if (col.equals(PA.ForeColor))
-			                		input.add(PA.Foreground);
-			                	else
-			                		input.add(PA.Background);
-			                }
-			            }
-					}
-					
-					try
-					{
-						// compute pa/hopfield and show the outcome
-						WritableImage wr = null;
-						
-						if (pa != null && prefix.equals("#pa_"))
-							wr = pa.Compute(input);
-						else if (hopfield != null && prefix.equals("#hopfield_"))
-						{
-							wr = hopfield.Compute(input);
-							step_label.setText("Current Step: " + hopfield.getStepsNumber());
-						}
-						
-						out_image.setImage(wr);
-					}
-					catch (Exception ex)
-					{
-						ex.printStackTrace();
-					}
+					// compute the input according to the deteriorated image
+					for (int y = 0; y < PA.HEIGHT; y++) 
+		            {
+		                for (int x = 0; x < PA.WIDTH; x++) 
+		                {
+		                	Color col = pr.getColor(x, y);
+		                	
+		                	if (col.equals(PA.ForeColor))
+		                		input.add(PA.Foreground);
+		                	else
+		                		input.add(PA.Background);
+		                }
+		            }
 				}
-			}	
+				
+				try
+				{
+					// compute pa/hopfield and show the outcome
+					WritableImage wr = null;
+					
+					if (pa != null && prefix.equals("#pa_"))
+						wr = pa.Compute(input);
+					else if (hopfield != null && prefix.equals("#hopfield_"))
+					{
+						wr = hopfield.Compute(input);
+						step_label.setText("Current Step: " + hopfield.getStepsNumber());
+					}
+					
+					out_image.setImage(wr);
+				}
+				catch (Exception ex)
+				{
+					ex.printStackTrace();
+				}
+			}
 		});
 	}
 
@@ -242,7 +274,13 @@ public class Main extends Application
 	/** ALters the current input image. */
 	private static final void alter(int deterioration, Scene scene, String prefix)
 	{
-		WritableImage wr = patterns.get(index % patterns.size());
+		WritableImage wr = null;
+		
+		if (prefix.equals("#pa_"))
+			wr = patterns_pa.get(index_pa % patterns_pa.size());
+		else if (prefix.equals("#hopfield_"))
+			wr = patterns_hopfield.get(index_hopfield % patterns_hopfield.size());
+		
 		PixelReader pr = wr.getPixelReader();
 		
 		// clone the original pattern
@@ -266,7 +304,7 @@ public class Main extends Application
 				pw.setColor(x, y, PA.ForeColor);
 		}
 		
-		// show the deteriored pattern
+		// show the deteriorated pattern
 		ImageView input_image = (ImageView) scene.lookup(prefix + "input_image");
 		input_image.setImage(copy);
 	}
