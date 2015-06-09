@@ -43,7 +43,7 @@ public class Main extends Application
 	private static Hopfield hopfield;
 
 	/* Selected Image Size. */
-	private final static int SELECTED_SIZE = 40;
+	private final static int SELECTED_SIZE = 10;
 	
 	/* File Images HEIGHT and WIDTH value */
 	public final static int FILE_IMG_DIM = 10;
@@ -234,14 +234,14 @@ public class Main extends Application
 				
 				if (prefix.equals("#pa_") || (prefix.equals("#hopfield_") && hopfield.getStepsNumber() == 0))
 				{
-					input = new ArrayList<Integer>(PA.DIM * PA.DIM);
+					input = new ArrayList<Integer>(Main.SELECTED_SIZE * Main.SELECTED_SIZE);
 					Image current = input_image.getImage();
 					PixelReader pr = current.getPixelReader();
 		
 					// compute the input according to the deteriorated image
-					for (int y = 0; y < PA.DIM; y++) 
+					for (int y = 0; y < Main.SELECTED_SIZE; y++) 
 		            {
-		                for (int x = 0; x < PA.DIM; x++) 
+		                for (int x = 0; x < Main.SELECTED_SIZE; x++) 
 		                {
 		                	Color col = pr.getColor(x, y);
 		                	
@@ -281,6 +281,9 @@ public class Main extends Application
 	private static final void alter(int deterioration, Scene scene, String prefix)
 	{
 		WritableImage wr = null;
+		ArrayList<Integer[]> unchanged = new ArrayList<Integer[]>();
+		
+		
 		
 		if (prefix.equals("#pa_"))
 			wr = patterns_pa.get(index_pa % patterns_pa.size());
@@ -290,18 +293,31 @@ public class Main extends Application
 		PixelReader pr = wr.getPixelReader();
 		
 		// clone the original pattern
-		WritableImage copy = new WritableImage(pr, PA.DIM, PA.DIM);
+		WritableImage copy = new WritableImage(pr, Main.SELECTED_SIZE, Main.SELECTED_SIZE);
 		PixelWriter pw = copy.getPixelWriter();
 		pr = copy.getPixelReader();
         
-		deterioration = deterioration * (PA.DIM * PA.DIM) / 100;
+		deterioration = deterioration * (Main.SELECTED_SIZE * Main.SELECTED_SIZE) / 100;
 		Random rand = new Random();
+		
+		
+		// initialize unchanged
+		for (int i = 0; i < Main.SELECTED_SIZE; i++){
+			for (int j = 0; j < Main.SELECTED_SIZE; j++){
+				Integer[] array = {i, j};
+				unchanged.add(array);
+			}
+		}
+		
 		
 		// alter the pattern
 		for (int i = 0; i < deterioration; i++)
 		{
-			int x = rand.nextInt(PA.DIM);
-			int y = rand.nextInt(PA.DIM);
+			int index = rand.nextInt(Main.SELECTED_SIZE * Main.SELECTED_SIZE - i);
+			Integer[] coordinate = unchanged.remove(index);
+			int x = coordinate[0];
+			int y = coordinate[1];
+			
 			Color color = pr.getColor(x, y);
 			
 			if (color.equals(PA.ForeColor))
