@@ -43,7 +43,7 @@ public class Main extends Application
 	private static Hopfield hopfield;
 
 	/* Selected Image Size. */
-	private final static int SELECTED_SIZE = 10;
+	private final static int SELECTED_SIZE = 20;
 	
 	/* File Images HEIGHT and WIDTH value */
 	public final static int FILE_IMG_DIM = 10;
