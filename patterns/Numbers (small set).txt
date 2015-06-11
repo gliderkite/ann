@@ -30,14 +30,3 @@ x      xx
  xx       
 xxxxxxxxxx
 xxxxxxxxxx
-
-xxxxxxxxxx
-xxxxxxxxxx
-xx      xx
-        xx
-        xx
-      xxxx
-        xx
-xx      xx
-xxxxxxxxxx
-xxxxxxxxxx
