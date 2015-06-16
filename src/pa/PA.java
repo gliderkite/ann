@@ -101,6 +101,9 @@ public class PA
 			{
 				for (int j = 0; j < nInputs; j++)
 				{
+					if (i == j)
+						continue;
+					
 					Integer prev = weights.get(i).get(j);
 					weights.get(i).set(j, prev + pattern.get(i) * pattern.get(j));
 				}
