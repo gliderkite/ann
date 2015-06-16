@@ -1,10 +1,12 @@
-package hopfield;
+package nets;
+
+import nets.PA;
 
 import java.util.ArrayList;
 
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
-import pa.PA;
+
 
 
 /** Hopfield Neural Network. */

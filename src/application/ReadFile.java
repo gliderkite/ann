@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
 
-import pa.PA;
+import nets.*;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 

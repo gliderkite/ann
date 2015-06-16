@@ -1,7 +1,6 @@
 package application;
 	
-import pa.PA;
-import hopfield.Hopfield;
+import nets.*;
 
 import java.util.ArrayList;
 import java.util.Random;
