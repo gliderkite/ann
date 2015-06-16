@@ -2,35 +2,16 @@ package nets;
 
 import java.util.ArrayList;
 
-import javafx.scene.image.PixelReader;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
-import javafx.scene.paint.Color;
 
 
 /** Pattern Associator */
-public class PA 
+public class PA extends Network
 {
-	
-	/* Bitmap WIDTH and HEIGHT */
-	public static int DIM;
-	
-	/* Background input value. */
-	public final static int Background = -1;
-	
-	/* Foreground input value. */
-	public final static int Foreground = 1;
-	
-	/* Foreground color. */
-	public final static Color ForeColor = Color.RED;
-	
-	
 	
 	/* Matrix of weights. */
 	protected ArrayList<ArrayList<Integer>> weights;
-	
-	/* Number of inputs. */
-	protected int nInputs = 0;
 	
 	
 	
@@ -38,6 +19,7 @@ public class PA
 	public PA(ArrayList<WritableImage> patternsImg, int size)
 	{
 		DIM = size;
+		nInputs = DIM * DIM;
 		ArrayList<ArrayList<Integer>> patterns = Initialize(patternsImg);
 		Learn(patterns);
 	}
@@ -111,44 +93,5 @@ public class PA
 		}
 	}
 	
-	
-	/** Initializes inputs. */
-	private final ArrayList<ArrayList<Integer>> Initialize(ArrayList<WritableImage> patternsImg)
-	{
-		/* Array of input patterns. */
-		ArrayList<ArrayList<Integer>> patterns = new ArrayList<ArrayList<Integer>>(patternsImg.size());
-		
-		for (int i = 0; i < patternsImg.size(); i++)
-		{
-			WritableImage wr = patternsImg.get(i);
-			PixelReader pr = wr.getPixelReader();
-			
-			// all input patterns must have the same size
-			if ((int) wr.getWidth() != DIM)
-				throw new IllegalArgumentException();
-			if ((int) wr.getHeight() != DIM)
-				throw new IllegalArgumentException();
-			
-			if (nInputs == 0)
-				nInputs = DIM * DIM;
-			
-			patterns.add(new ArrayList<Integer>(nInputs));
-			
-			for (int y = 0; y < wr.getHeight(); y++)
-			{
-				for (int x = 0; x < wr.getWidth(); x++)
-				{
-					Color color = pr.getColor(x, y);
-					
-					if (color.equals(PA.ForeColor))
-						patterns.get(i).add(Foreground);
-					else
-						patterns.get(i).add(Background);
-				}
-			}
-		}
-		
-		return patterns;
-	}
 	
 }
